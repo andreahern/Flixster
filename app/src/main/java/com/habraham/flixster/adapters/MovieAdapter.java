@@ -1,6 +1,7 @@
 package com.habraham.flixster.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,8 +14,11 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.habraham.flixster.MovieDetailsActivity;
 import com.habraham.flixster.R;
 import com.habraham.flixster.models.Movie;
+
+import org.parceler.Parcels;
 
 import java.util.List;
 
@@ -48,7 +52,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         return movies.size();
     }
 
-    public class ViewHolder extends  RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tvTitle;
         TextView tvOverView;
         ImageView ivPoster;
@@ -58,18 +62,37 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
             tvTitle = itemView.findViewById(R.id.tvTitle);
             tvOverView = itemView.findViewById(R.id.tvOverview);
             ivPoster = itemView.findViewById(R.id.ivPoster);
+
+            itemView.setOnClickListener(this);
         }
 
         public void bind(Movie movie) {
             tvTitle.setText(movie.getTitle());
             tvOverView.setText(movie.getOverview());
             String imgUrl;
+            int placeholder;
             if (context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
                 imgUrl = movie.getBackdropPath();
-            } else imgUrl = movie.getPosterPath();
+                placeholder = R.drawable.flicks_backdrop_placeholder;
+            } else {
+                imgUrl = movie.getPosterPath();
+                placeholder = R.drawable.flicks_movie_placeholder;
+            }
 
-            Glide.with(context).load(imgUrl).into(ivPoster);
+            Glide.with(context).load(imgUrl).placeholder(placeholder).into(ivPoster);
 
         }
+
+        @Override
+        public void onClick(View view) {
+            int position = getAdapterPosition();
+            if (position != RecyclerView.NO_POSITION) {
+                Movie movie = movies.get(position);
+                Intent i = new Intent(context, MovieDetailsActivity.class);
+                i.putExtra(Movie.class.getSimpleName(), Parcels.wrap(movie));
+                context.startActivity(i);
+            }
+        }
     }
+
 }
