@@ -23,13 +23,14 @@ import okhttp3.Headers;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static final String NOW_PLAYING_URL = "https://api.themoviedb.org/3/movie/now_playing?api_key=6ddb66cf97f30e23465fd46406177c02";
     public static final String TAG = "MainActivity";
 
     List<Movie> movies;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        final String NOW_PLAYING_URL = String.format("https://api.themoviedb.org/3/movie/now_playing?api_key=%s", getString(R.string.tmdb_api_key));
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         RecyclerView rvMovies = findViewById(R.id.rvMovies);

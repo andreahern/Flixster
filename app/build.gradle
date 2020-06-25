@@ -1,6 +1,10 @@
 apply plugin: 'com.android.application'
 
 android {
+    viewBinding {
+        enabled = true
+    }
+
     compileSdkVersion 30
     buildToolsVersion "30.0.0"
 
@@ -40,3 +44,4 @@ dependencies {
     implementation 'jp.wasabeef:glide-transformations:4.1.0'
     implementation files('libs/YouTubeAndroidPlayerApi.jar')
 }
+

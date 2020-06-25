@@ -26,8 +26,7 @@ public class MovieTrailerActivity extends YouTubeBaseActivity {
         setContentView(R.layout.activity_movie_trailer);
 
         final int movieId = getIntent().getIntExtra("id", 0);
-        Log.d("MovieTrailerActivity", "" + movieId);
-        String movieLookupUrl = String.format("https://api.themoviedb.org/3/movie/%s/videos?api_key=6ddb66cf97f30e23465fd46406177c02&language=en-US", movieId);
+        String movieLookupUrl = String.format("https://api.themoviedb.org/3/movie/%s/videos?api_key=%s&language=en-US", movieId, getString(R.string.tmdb_api_key));
         AsyncHttpClient client = new AsyncHttpClient();
 
         client.get(movieLookupUrl, new JsonHttpResponseHandler() {
@@ -41,6 +40,7 @@ public class MovieTrailerActivity extends YouTubeBaseActivity {
                     final String videoId = result.getJSONObject(0).getString("key");
                     Log.d("MovieTrailerActivity", videoId);
 
+                    //
                     // resolve the player view from the layout
                     YouTubePlayerView playerView = (YouTubePlayerView) findViewById(R.id.player);
 
