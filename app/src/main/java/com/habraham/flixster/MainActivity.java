@@ -6,10 +6,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import com.codepath.asynchttpclient.AsyncHttpClient;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
 import com.habraham.flixster.adapters.MovieAdapter;
+import com.habraham.flixster.databinding.ActivityMainBinding;
 import com.habraham.flixster.models.Movie;
 
 import org.json.JSONArray;
@@ -22,7 +24,7 @@ import java.util.List;
 import okhttp3.Headers;
 
 public class MainActivity extends AppCompatActivity {
-
+    private ActivityMainBinding binding;
     public static final String TAG = "MainActivity";
 
     List<Movie> movies;
@@ -32,12 +34,14 @@ public class MainActivity extends AppCompatActivity {
         final String NOW_PLAYING_URL = String.format("https://api.themoviedb.org/3/movie/now_playing?api_key=%s", getString(R.string.tmdb_api_key));
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        RecyclerView rvMovies = findViewById(R.id.rvMovies);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
+
+        RecyclerView rvMovies = binding.rvMovies;
         movies = new ArrayList<>();
 
         final MovieAdapter movieAdapter = new MovieAdapter(this, movies);
-
         rvMovies.setAdapter(movieAdapter);
         rvMovies.setLayoutManager(new LinearLayoutManager(this));
 

@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.habraham.flixster.MovieDetailsActivity;
 import com.habraham.flixster.R;
+import com.habraham.flixster.databinding.ActivityMainBinding;
 import com.habraham.flixster.models.Movie;
 
 import org.parceler.Parcels;
@@ -78,17 +79,12 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
             if (context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
                 imgUrl = movie.getBackdropPath();
                 placeholder = R.drawable.flicks_backdrop_placeholder;
-                width = 800;
-                height = 500;
             } else {
                 imgUrl = movie.getPosterPath();
                 placeholder = R.drawable.flicks_movie_placeholder;
-                width = 500;
-                height = 700;
             }
 
-            Glide.with(context).load(imgUrl).placeholder(placeholder).transform(new RoundedCornersTransformation(30, 10)).
-            override(width, height).into(ivPoster);
+                Glide.with(context).load(imgUrl).placeholder(placeholder).transform(new RoundedCornersTransformation(30, 10)).into(ivPoster);
 
         }
 

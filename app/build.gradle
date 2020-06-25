@@ -1,8 +1,8 @@
 apply plugin: 'com.android.application'
 
 android {
-    viewBinding {
-        enabled = true
+    buildFeatures {
+        viewBinding true
     }
 
     compileSdkVersion 30
@@ -15,7 +15,7 @@ android {
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AnctrbckrrftvdnejlfgcbtfhnketihvgndroidJUnitRunner"
     }
 
     buildTypes {

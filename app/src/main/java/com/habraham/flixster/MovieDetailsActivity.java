@@ -11,12 +11,13 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.habraham.flixster.databinding.ActivityMovieDetailsBinding;
 import com.habraham.flixster.models.Movie;
 
 import org.parceler.Parcels;
 
 public class MovieDetailsActivity extends AppCompatActivity {
-
+    private ActivityMovieDetailsBinding binding;
     Movie movie;
 
     TextView tvTitle;
@@ -28,13 +29,15 @@ public class MovieDetailsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(    Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_movie_details);
+        binding = ActivityMovieDetailsBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
 
-        tvTitle = findViewById(R.id.tvTitle);
-        tvOverview = findViewById(R.id.tvOverview);
-        rbVoteAverage = findViewById(R.id.rbVoteAverage);
-        tvReleased = findViewById(R.id.tvReleased);
-        ivBackdrop = findViewById(R.id.ivBackdrop);
+        tvTitle = binding.tvTitle;
+        tvOverview = binding.tvOverview;
+        rbVoteAverage = binding.rbVoteAverage;
+        tvReleased = binding.tvReleased;
+        ivBackdrop = binding.ivBackdrop;
 
         movie = Parcels.unwrap(getIntent().getParcelableExtra(Movie.class.getSimpleName()));
         Log.d("MovieDetailsActivity", String.format("Showing details for '%s'", movie.getTitle()));

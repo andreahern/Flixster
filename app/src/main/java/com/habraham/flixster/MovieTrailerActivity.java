@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import com.codepath.asynchttpclient.AsyncHttpClient;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
@@ -11,6 +12,7 @@ import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerView;
+import com.habraham.flixster.databinding.ActivityMovieTrailerBinding;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -19,11 +21,15 @@ import org.json.JSONObject;
 import okhttp3.Headers;
 
 public class MovieTrailerActivity extends YouTubeBaseActivity {
+    private ActivityMovieTrailerBinding binding;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_movie_trailer);
+        binding = ActivityMovieTrailerBinding.inflate(getLayoutInflater());
+        View view = binding.getRoot();
+        setContentView(view);
 
         final int movieId = getIntent().getIntExtra("id", 0);
         String movieLookupUrl = String.format("https://api.themoviedb.org/3/movie/%s/videos?api_key=%s&language=en-US", movieId, getString(R.string.tmdb_api_key));
@@ -40,23 +46,19 @@ public class MovieTrailerActivity extends YouTubeBaseActivity {
                     final String videoId = result.getJSONObject(0).getString("key");
                     Log.d("MovieTrailerActivity", videoId);
 
-                    //
-                    // resolve the player view from the layout
-                    YouTubePlayerView playerView = (YouTubePlayerView) findViewById(R.id.player);
+                    YouTubePlayerView playerView = (YouTubePlayerView) binding.player;
 
                     // initialize with API key stored in secrets.xml
                     playerView.initialize(getString(R.string.youtube_api_key), new YouTubePlayer.OnInitializedListener() {
                         @Override
                         public void onInitializationSuccess(YouTubePlayer.Provider provider,
                                                             YouTubePlayer youTubePlayer, boolean b) {
-                            // do any work here to cue video, play video, etc.
                             youTubePlayer.cueVideo(videoId);
                         }
 
                         @Override
                         public void onInitializationFailure(YouTubePlayer.Provider provider,
                                                             YouTubeInitializationResult youTubeInitializationResult) {
-                            // log the error
                             Log.e("MovieTrailerActivity", "Error initializing YouTube player");
                         }
                     });
