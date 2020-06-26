@@ -46,7 +46,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
         tvOverview.setText(movie.getOverview());
         tvReleased.setText(movie.getReleased());
 
-        Glide.with(this).load(movie.getBackdropPath()).placeholder(R.drawable.flicks_backdrop_placeholder).override(1280, 800).into(ivBackdrop);
+        Glide.with(this).load(movie.getBackdropPath()).placeholder(R.drawable.flicks_backdrop_placeholder).into(ivBackdrop);
 
         float voteAverage = movie.getVoteAverage().floatValue();
         rbVoteAverage.setRating(voteAverage > 0 ? voteAverage / 2.0f : voteAverage);
