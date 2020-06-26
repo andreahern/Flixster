@@ -3,6 +3,7 @@ package com.habraham.flixster;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -23,6 +24,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
     TextView tvTitle;
     TextView tvOverview;
     ImageView ivBackdrop;
+    ImageView ivPlay;
     RatingBar rbVoteAverage;
     TextView tvReleased;
 
@@ -38,6 +40,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
         rbVoteAverage = binding.rbVoteAverage;
         tvReleased = binding.tvReleased;
         ivBackdrop = binding.ivBackdrop;
+        ivPlay = binding.ivPlay;
 
         movie = Parcels.unwrap(getIntent().getParcelableExtra(Movie.class.getSimpleName()));
         Log.d("MovieDetailsActivity", String.format("Showing details for '%s'", movie.getTitle()));
@@ -46,7 +49,12 @@ public class MovieDetailsActivity extends AppCompatActivity {
         tvOverview.setText(movie.getOverview());
         tvReleased.setText(movie.getReleased());
 
+        int width, height;
         Glide.with(this).load(movie.getBackdropPath()).placeholder(R.drawable.flicks_backdrop_placeholder).into(ivBackdrop);
+
+        if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) width = height = 175;
+        else width = height = 100;
+        Glide.with(this).load(R.drawable.play).override(width, height).into(ivPlay);
 
         float voteAverage = movie.getVoteAverage().floatValue();
         rbVoteAverage.setRating(voteAverage > 0 ? voteAverage / 2.0f : voteAverage);
