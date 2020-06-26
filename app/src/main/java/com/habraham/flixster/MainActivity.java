@@ -1,12 +1,16 @@
 package com.habraham.flixster;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.codepath.asynchttpclient.AsyncHttpClient;
 import com.codepath.asynchttpclient.callback.JsonHttpResponseHandler;
@@ -26,11 +30,25 @@ import okhttp3.Headers;
 public class MainActivity extends AppCompatActivity {
     private ActivityMainBinding binding;
     public static final String TAG = "MainActivity";
-
+    public RecyclerView rvMovies;
+    Parcelable recyclerViewState;
+    LinearLayoutManager llm;
     List<Movie> movies;
+    MovieAdapter movieAdapter;
+    int current;
+
+    @Override
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+
+        rvMovies.setAdapter(movieAdapter);
+        llm.scrollToPosition(current);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
         final String NOW_PLAYING_URL = String.format("https://api.themoviedb.org/3/movie/now_playing?api_key=%s", getString(R.string.tmdb_api_key));
 
         super.onCreate(savedInstanceState);
@@ -38,12 +56,27 @@ public class MainActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-        RecyclerView rvMovies = binding.rvMovies;
+        rvMovies = binding.rvMovies;
+        rvMovies.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+
+                current = llm.findFirstCompletelyVisibleItemPosition();
+            }
+        });
+
         movies = new ArrayList<>();
 
-        final MovieAdapter movieAdapter = new MovieAdapter(this, movies);
+        movieAdapter = new MovieAdapter(this, movies);
         rvMovies.setAdapter(movieAdapter);
-        rvMovies.setLayoutManager(new LinearLayoutManager(this));
+        llm = new LinearLayoutManager(this);
+        rvMovies.setLayoutManager(llm);
 
         AsyncHttpClient client = new AsyncHttpClient();
         client.get(NOW_PLAYING_URL, new JsonHttpResponseHandler() {
@@ -58,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
                     movieAdapter.notifyDataSetChanged();
                     Log.i(TAG, "Movies: " + movies.size());
                 } catch (JSONException e) {
-                    Log.e(TAG,"Hit json exception", e);
+                    Log.e(TAG, "Hit json exception", e);
                 }
             }
 
@@ -67,5 +100,6 @@ public class MainActivity extends AppCompatActivity {
                 Log.d(TAG, "onFailure");
             }
         });
+
     }
 }

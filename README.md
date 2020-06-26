@@ -25,18 +25,20 @@ The following **stretch** features are implemented:
 The following **additional** features are implemented:
 
 * [x] Added released date of movies to their details page.
+* [x] Fixed issue where RecyclerView goes back to top on orientation change.
 
 ## Video Walkthrough
 
 Here's a walkthrough of implemented user stories:
 
-<img src='http://i.imgur.com/link/to/your/gif/file.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+![Portrait Demo](screenshots/Portrait_Demo.gif)
+![Landscape Demo](screenshots/Landscape_Demo.gif)
 
 GIF created with [Kap](http://www.getkap.co).
 
 ## Notes
 
-Describe any challenges encountered while building the app.
+UI desgin is still one of my biggest challenges that I am facing.
 
 ## Open-source libraries used
 

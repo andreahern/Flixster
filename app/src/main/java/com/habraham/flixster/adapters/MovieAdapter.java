@@ -63,13 +63,15 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         TextView tvTitle;
         TextView tvOverView;
-        ImageView ivPoster;
+        ImageView image;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvTitle = binding.tvTitle;
             tvOverView = binding.tvOverview;
-            ivPoster = binding.ivPoster;
+            if (context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+                image = binding.ivBackdrop;
+            else image = binding.ivPoster;
 
             itemView.setOnClickListener(this);
         }
@@ -79,8 +81,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
             tvOverView.setText(movie.getOverview());
             String imgUrl;
             int placeholder;
-            int width;
-            int height;
+
             if (context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
                 imgUrl = movie.getBackdropPath();
                 placeholder = R.drawable.flicks_backdrop_placeholder;
@@ -89,7 +90,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
                 placeholder = R.drawable.flicks_movie_placeholder;
             }
 
-                Glide.with(context).load(imgUrl).placeholder(placeholder).transform(new RoundedCornersTransformation(30, 10)).into(ivPoster);
+            Glide.with(context).load(imgUrl).placeholder(placeholder).transform(new RoundedCornersTransformation(30, 10)).into(image);
 
         }
 
