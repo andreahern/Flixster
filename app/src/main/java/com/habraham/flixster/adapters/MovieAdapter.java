@@ -17,6 +17,7 @@ import com.bumptech.glide.Glide;
 import com.habraham.flixster.MovieDetailsActivity;
 import com.habraham.flixster.R;
 import com.habraham.flixster.databinding.ActivityMainBinding;
+import com.habraham.flixster.databinding.ItemMovieBinding;
 import com.habraham.flixster.models.Movie;
 
 import org.parceler.Parcels;
@@ -26,6 +27,8 @@ import java.util.List;
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
+
+    private ItemMovieBinding binding;
 
     Context context;
     List<Movie> movies;
@@ -39,7 +42,9 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Log.d("MovieAdapter", "onCreateViewHolder");
-        View movieView = LayoutInflater.from(context).inflate(R.layout.item_movie, parent, false);
+        LayoutInflater inflater = LayoutInflater.from(context);
+        binding = ItemMovieBinding.inflate(inflater, parent, false);
+        View movieView = binding.getRoot();
         return new ViewHolder(movieView);
     }
 
@@ -62,9 +67,9 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvTitle = itemView.findViewById(R.id.tvTitle);
-            tvOverView = itemView.findViewById(R.id.tvOverview);
-            ivPoster = itemView.findViewById(R.id.ivPoster);
+            tvTitle = binding.tvTitle;
+            tvOverView = binding.tvOverview;
+            ivPoster = binding.ivPoster;
 
             itemView.setOnClickListener(this);
         }
